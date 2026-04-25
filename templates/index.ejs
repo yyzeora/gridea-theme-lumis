@@ -1,0 +1,227 @@
+<html>
+  <head>
+    <%- include('./includes/head', { siteTitle: themeConfig.siteName }) %>
+  </head>
+  <body>
+    <!-- start: #wrapper -->
+    <div class="wrapper">
+      
+      <%- include('./includes/header') %>
+
+      <main id="home" class="main">
+        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
+        <div class="row">
+          <div class="content-wrapper grid-posts content">
+            
+            <!-- 新版Banner区域 -->
+            <% if (site.customConfig.bannerEnable !== 'false') { %>
+            <div class="new-banner-section">
+              <div class="new-banner-bg">
+                <% if (site.customConfig.bannerBgImage) { %>
+                <img src="<%= site.customConfig.bannerBgImage %>" alt="Banner背景" class="new-banner-bg-img">
+                <% } else { %>
+                <div class="new-banner-bg-placeholder"></div>
+                <% } %>
+                <!-- 底部渐变遮罩 -->
+                <div class="new-banner-gradient"></div>
+              </div>
+              <div class="new-banner-content">
+                <div class="new-banner-capsule">
+                  <% if (site.customConfig.bannerSubtitle) { %>
+                  <span class="new-banner-subtitle"><%= site.customConfig.bannerSubtitle %></span>
+                  <% } %>
+                </div>
+                <% if (site.customConfig.bannerTitle) { %>
+                <h1 class="new-banner-title"><%= site.customConfig.bannerTitle %></h1>
+                <% } %>
+              </div>
+            </div>
+            <% } %>
+            
+            <!-- Banner 区域 - 左侧大图 + 右侧文章列表 -->
+            <% 
+            var bannerPosts = site.customConfig.bannerPosts || [];
+            
+            // 过滤掉空数据
+            bannerPosts = bannerPosts.filter(function(p) { return p && p.title; });
+            
+            // 填充到 4 个
+            while (bannerPosts.length < 4) {
+              bannerPosts.push(null);
+            }
+            
+            var firstPost = bannerPosts[0];
+            var defaultBanner = firstPost && firstPost.banner ? firstPost.banner : site.customConfig.featureImage;
+            var defaultTitle = firstPost && firstPost.title ? firstPost.title : '欢迎来到我的博客';
+            var defaultColor = firstPost && firstPost.color ? firstPost.color : '#105080';
+            
+            if (firstPost) { 
+            %>
+            <div class="banner-section">
+              <div class="banner-container" id="bannerContainer">
+                <!-- 左侧主文章 -->
+                <div class="main-banner-wrapper">
+                  <a href="<%= firstPost.link || 'javascript:void(0)' %>" class="main-banner" id="mainBanner">
+                    <!-- 顶部渐变遮罩 -->
+                    <div class="banner-gradient-overlay banner-gradient-top" id="bannerGradientTop"></div>
+                    
+                    <div class="main-banner-image">
+                      <img id="mainBannerImg" src="<%= defaultBanner %>" alt="<%= defaultTitle %>">
+                    </div>
+                    
+                    <!-- 底部渐变遮罩 -->
+                    <div class="banner-gradient-overlay banner-gradient-bottom" id="bannerGradientBottom"></div>
+                    
+                    <div class="main-banner-overlay">
+                      <div class="main-banner-content">
+                        <span class="main-banner-badge">★ 全站推荐</span>
+                        <h2 class="main-banner-title" id="mainBannerTitle"><%= defaultTitle %></h2>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                
+                <!-- 右侧文章列表 - 4 个位置 -->
+                <div class="side-banner-list" id="sideBannerList">
+                  <% bannerPosts.forEach(function(post, index) { 
+                    if (post) { %>
+                  <a href="<%= post.link %>" class="side-banner-item <%= index === 0 ? 'active' : '' %>" 
+                     data-index="<%= index %>" 
+                     data-link="<%= post.link %>" 
+                     data-banner="<%= post.banner %>"
+                     data-title="<%= post.title %>"
+                     data-color="<%= post.color || '#105080' %>">
+                    <div class="side-banner-thumb">
+                      <img src="<%= post.cover || post.banner || site.customConfig.featureImage %>" alt="<%= post.title %>">
+                    </div>
+                    <div class="side-banner-content">
+                      <h3 class="side-banner-title"><%= post.title %></h3>
+                    </div>
+                  </a>
+                  <% } else { %>
+                  <div class="side-banner-item placeholder">
+                    <div class="side-banner-thumb">
+                      <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </div>
+                    <div class="side-banner-content">
+                      <h3 class="side-banner-title">等待添加</h3>
+                    </div>
+                  </div>
+                  <% } }); %>
+                </div>
+              </div>
+            </div>
+            
+            <script>
+            (function() {
+              var items = document.querySelectorAll('.side-banner-item:not(.placeholder)');
+              var sideList = document.getElementById('sideBannerList');
+              var mainBanner = document.getElementById('mainBanner');
+              var mainBannerImg = document.getElementById('mainBannerImg');
+              var mainBannerTitle = document.getElementById('mainBannerTitle');
+              var bannerGradientTop = document.getElementById('bannerGradientTop');
+              var bannerGradientBottom = document.getElementById('bannerGradientBottom');
+              
+              // 设置默认主色调
+              var defaultColor = '<%= defaultColor %>';
+              sideList.style.background = defaultColor;
+              sideList.style.backdropFilter = 'blur(20px)';
+              sideList.style.webkitBackdropFilter = 'blur(20px)';
+              
+              // 设置顶部和底部渐变遮罩
+              bannerGradientTop.style.background = 'linear-gradient(to bottom, ' + defaultColor + ' 0%, rgba(0,0,0,0) 100%)';
+              bannerGradientBottom.style.background = 'linear-gradient(to top, ' + defaultColor + ' 0%, rgba(0,0,0,0) 100%)';
+              
+              items.forEach(function(item) {
+                // 鼠标悬停时切换
+                item.addEventListener('mouseenter', function(e) {
+                  // 移除所有激活状态
+                  items.forEach(function(i) {
+                    i.classList.remove('active');
+                    i.style.background = '';
+                  });
+                  
+                  // 添加当前激活状态
+                  this.classList.add('active');
+                  
+                  // 获取当前文章的信息
+                  var title = this.getAttribute('data-title');
+                  var link = this.getAttribute('data-link');
+                  var banner = this.getAttribute('data-banner');
+                  var color = this.getAttribute('data-color') || defaultColor;
+                  
+                  // 更新左侧大图
+                  if (banner) {
+                    mainBannerImg.src = banner;
+                  }
+                  
+                  // 更新链接
+                  if (link) {
+                    mainBanner.href = link;
+                  }
+                  
+                  // 更新标题
+                  if (mainBannerTitle && title) {
+                    mainBannerTitle.textContent = title;
+                  }
+                  
+                  // 更新右侧列表背景色
+                  sideList.style.background = color;
+                  
+                  // 更新顶部和底部渐变遮罩
+                  bannerGradientTop.style.background = 'linear-gradient(to bottom, ' + color + ' 0%, rgba(0,0,0,0) 100%)';
+                  bannerGradientBottom.style.background = 'linear-gradient(to top, ' + color + ' 0%, rgba(0,0,0,0) 100%)';
+                  
+                  // 当前激活项变深色
+                  this.style.background = 'rgba(0,0,0,0.25)';
+                });
+              });
+            })();
+            </script>
+            <% } %>
+            
+            <!-- start: .articles -->
+            <div class="articles columns-3">
+              <% 
+              // 按时间倒序排序，不考虑置顶状态
+              var sortedPosts = posts.slice().sort(function(a, b) {
+                return new Date(b.date) - new Date(a.date);
+              });
+              sortedPosts.forEach(function(post, postIndex) { %>
+              <article class="post-card grid-33 tablet-grid-50 mobile-grid-100 np-mobile post type-post status-publish format-standard has-post-thumbnail hentry">
+                <div class="article-wrapper">
+                  <a href="<%= post.link %>" class="post-card-image">
+                    <div class="featured-image cover" style="background-image: url('<% if (post.feature) { %><%= post.feature %><% } else { %><%= site.customConfig.featureImage %><%} %>');"></div>
+                  </a>
+                  <div class="post-card-content">
+                    <h2 class="post-title"><a href="<%= post.link %>"><%= post.title %></a></h2>
+                    <div class="post-footer">
+                      <div class="post-tags">
+                        <% if (post.tags && post.tags.length > 0) { %>
+                          <% post.tags.slice(0, 2).forEach(function(tag) { %>
+                            <span class="tag">#<%= tag.name %></span>
+                          <% }); %>
+                        <% } %>
+                      </div>
+                      <time class="post-date" datetime="<%= post.dateFormat %>"><%= post.dateFormat %></time>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              <% }); %>
+              <div class="clear"></div>
+            </div>
+            <!-- end: .articles -->
+            
+            <%- include('./includes/pagination') %>
+
+          </div>
+          </div>
+        </div>
+      </main>
+
+    <%- include('./includes/footer') %>
+    </div>
+    <!-- end: #wrapper -->
+  </body>
+</html>

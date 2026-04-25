@@ -1,0 +1,655 @@
+      <style>
+      /* 胶囊滑块 Tabbar 样式 */
+      
+      /* 全局隐藏原始菜单元素 */
+      .header-brand,
+      .header-actions,
+      .mobile-menu-toggle,
+      .mobile-menu,
+      .header-nav-list {
+        display: none !important;
+      }
+      
+      /* 确保 modern-header 默认隐藏，在媒体查询中显示 */
+      .modern-header {
+        display: none !important;
+      }
+      
+      /* 移动端全局重置 - 移除顶部留白 */
+      @media screen and (max-width: 768px) {
+        html, body {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+      }
+      
+      /* ========== 桌面端（>1024px）========== */
+      @media screen and (min-width: 1025px) {
+        /* 显示桌面端导航栏 */
+        .modern-header {
+          display: block !important;
+          position: fixed !important;
+          top: 12px !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          z-index: 9999 !important;
+          width: auto !important;
+          max-width: calc(100% - 64px) !important;
+          text-align: center !important;
+        }
+        
+        /* 隐藏移动端导航栏 */
+        .mobile-bottom-nav {
+          display: none !important;
+        }
+        
+        /* 胶囊滑块 Tabbar 容器 */
+        .capsule-tabbar {
+          position: relative;
+          display: flex;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 100px;
+          padding: 5px;
+          gap: 2px;
+          box-shadow:
+            inset 0 1px 3px rgba(0, 0, 0, 0.05),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+          margin: 0 auto;
+          max-width: 90%;
+          width: fit-content;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          justify-content: center;
+        }
+        
+        .capsule-pill {
+          position: absolute;
+          top: 5px;
+          height: calc(100% - 10px);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
+          border-radius: 100px;
+          box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.3);
+          transition:
+            left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.25s ease;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0; /* 默认隐藏滑块 */
+        }
+        
+        /* 鼠标悬停时显示滑块 */
+        .capsule-tabbar:hover .capsule-pill {
+          opacity: 1;
+        }
+
+        .capsule-tab {
+          position: relative;
+          z-index: 2;
+          padding: 12px 24px;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          color: rgba(0, 0, 0, 0.8);
+          cursor: pointer;
+          border-radius: 100px;
+          white-space: nowrap;
+          transition: all 0.3s ease;
+          user-select: none;
+          text-decoration: none;
+          display: block;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif !important;
+        }
+
+        .capsule-tab:hover {
+            color: rgba(0, 0, 0, 0.9);
+            transform: translateY(-1px);
+        }
+        
+        /* 搜索按钮样式 - 与菜单项一致 */
+        .capsule-search-btn {
+          position: relative;
+          z-index: 2;
+          padding: 12px 20px;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          color: rgba(0, 0, 0, 0.8);
+          cursor: pointer;
+          border-radius: 100px;
+          white-space: nowrap;
+          transition: all 0.3s ease;
+          user-select: none;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 4px;
+        }
+
+        .capsule-search-btn:hover {
+            color: rgba(0, 0, 0, 0.9);
+            transform: translateY(-1px);
+        }
+        
+        .capsule-search-btn svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+        }
+        
+        /* 隐藏不需要的元素 */
+        .header-brand,
+        .header-actions,
+        .mobile-menu-toggle,
+        .mobile-menu {
+          display: none !important;
+        }
+      }
+      
+      /* ========== 平板端（769px - 1024px）使用桌面端菜单 ========== */
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        .modern-header {
+          display: block !important;
+          position: fixed !important;
+          top: 12px !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          z-index: 9999 !important;
+          width: auto !important;
+          max-width: calc(100% - 64px) !important;
+          text-align: center !important;
+        }
+        
+        .mobile-bottom-nav {
+          display: none !important;
+        }
+        
+        /* 胶囊滑块 Tabbar 容器 */
+        .capsule-tabbar {
+          position: relative;
+          display: flex;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border-radius: 100px;
+          padding: 5px;
+          gap: 2px;
+          box-shadow:
+            inset 0 1px 3px rgba(0, 0, 0, 0.05),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+          margin: 0 auto;
+          max-width: 600px;
+          width: fit-content;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          justify-content: center;
+        }
+        
+        .capsule-pill {
+          position: absolute;
+          top: 5px;
+          height: calc(100% - 10px);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
+          border-radius: 100px;
+          box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(255, 255, 255, 0.3);
+          transition:
+            left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.25s ease;
+          pointer-events: none;
+          z-index: 1;
+          opacity: 0; /* 默认隐藏滑块 */
+        }
+        
+        /* 鼠标悬停时显示滑块 */
+        .capsule-tabbar:hover .capsule-pill {
+          opacity: 1;
+        }
+
+        .capsule-tab {
+          position: relative;
+          z-index: 2;
+          padding: 12px 24px;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          color: rgba(0, 0, 0, 0.8);
+          cursor: pointer;
+          border-radius: 100px;
+          white-space: nowrap;
+          transition: all 0.3s ease;
+          user-select: none;
+          text-decoration: none;
+          display: block;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif !important;
+        }
+
+        .capsule-tab:hover {
+            color: rgba(0, 0, 0, 0.9);
+            transform: translateY(-1px);
+        }
+        
+        /* 搜索按钮样式 - 与菜单项一致 */
+        .capsule-search-btn {
+          position: relative;
+          z-index: 2;
+          padding: 12px 20px;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          color: rgba(0, 0, 0, 0.8);
+          cursor: pointer;
+          border-radius: 100px;
+          white-space: nowrap;
+          transition: all 0.3s ease;
+          user-select: none;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 4px;
+        }
+
+        .capsule-search-btn:hover {
+            color: rgba(0, 0, 0, 0.9);
+            transform: translateY(-1px);
+        }
+        
+        .capsule-search-btn svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+        }
+        
+        .header-brand,
+        .header-actions,
+        .mobile-menu-toggle,
+        .mobile-menu {
+          display: none !important;
+        }
+      }
+      
+      /* ========== 移动端（≤768px）下拉菜单 ========== */
+      @media screen and (max-width: 768px) {
+        .modern-header {
+          display: none !important;
+        }
+        
+        .mobile-bottom-nav {
+          display: block !important;
+          position: fixed !important;
+          top: 12px !important;
+          right: 16px !important;
+          left: auto !important;
+          transform: none !important;
+          z-index: 9999 !important;
+        }
+        
+        /* 前往按钮 */
+        .mobile-nav-trigger {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 100px;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          box-shadow: 
+            0 2px 12px rgba(0, 0, 0, 0.06),
+            0 4px 20px rgba(0, 0, 0, 0.04);
+          cursor: pointer;
+          font-size: 15px;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.85);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          user-select: none;
+        }
+        
+        .mobile-nav-trigger:hover {
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 
+            0 4px 16px rgba(0, 0, 0, 0.08),
+            0 6px 24px rgba(0, 0, 0, 0.06);
+        }
+        
+        .mobile-nav-trigger.active {
+          background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .mobile-nav-trigger svg {
+          width: 16px;
+          height: 16px;
+          fill: currentColor;
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-nav-trigger.active svg {
+          transform: rotate(180deg);
+        }
+        
+        /* 下拉菜单 */
+        .mobile-dropdown-menu {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          min-width: 240px;
+          background: rgba(255, 255, 255, 0.92);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.6);
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.08),
+            0 12px 48px rgba(0, 0, 0, 0.06);
+          padding: 8px;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-8px) scale(0.96);
+          transform-origin: top right;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-dropdown-menu.open {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0) scale(1);
+        }
+        
+        /* 菜单标题 */
+        .mobile-dropdown-title {
+          padding: 12px 16px 8px;
+          font-size: 12px;
+          font-weight: 600;
+          color: rgba(0, 0, 0, 0.45);
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        
+        /* 菜单项 */
+        .mobile-dropdown-item {
+          display: block;
+          padding: 14px 16px;
+          font-size: 15px;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.85);
+          text-decoration: none;
+          border-radius: 12px;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+        
+        .mobile-dropdown-item:hover {
+          background: rgba(0, 0, 0, 0.04);
+          color: rgba(0, 0, 0, 0.95);
+        }
+        
+        .mobile-dropdown-item:active {
+          background: rgba(0, 0, 0, 0.06);
+          transform: scale(0.98);
+        }
+        
+        /* 分隔线 */
+        .mobile-dropdown-divider {
+          height: 1px;
+          background: rgba(0, 0, 0, 0.06);
+          margin: 4px 12px;
+        }
+        
+        /* 关闭按钮 */
+        .mobile-dropdown-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          color: rgba(0, 0, 0, 0.45);
+          transition: all 0.2s ease;
+        }
+        
+        .mobile-dropdown-close:hover {
+          background: rgba(0, 0, 0, 0.06);
+          color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .mobile-dropdown-close svg {
+          width: 18px;
+          height: 18px;
+          fill: currentColor;
+        }
+      }
+      </style>
+
+      <!-- 桌面端胶囊滑块导航栏 -->
+      <header id="header" class="modern-header">
+        <div class="capsule-tabbar" id="capsuleTabbar">
+          <div class="capsule-pill" id="capsulePill"></div>
+          <% if (site.menus && site.menus.length > 0) { %>
+            <% site.menus.forEach(function(menu, index) { %>
+              <a href="<%= menu.link %>" class="capsule-tab <% if (menu.isActive) { %>active<% } %>" data-page="<%= menu.name %>">
+                <%= menu.name %>
+              </a>
+            <% }); %>
+          <% } else { %>
+            <a href="<%= themeConfig.domain %>" class="capsule-tab" data-page="index">首页</a>
+            <a href="<%= themeConfig.domain %>/archives" class="capsule-tab" data-page="archives">归档</a>
+            <a href="<%= themeConfig.domain %>/tags" class="capsule-tab" data-page="tags">标签</a>
+            <a href="<%= themeConfig.domain %>/essay" class="capsule-tab" data-page="essay">即刻</a>
+            <a href="<%= themeConfig.domain %>/friends" class="capsule-tab" data-page="friends">友链</a>
+            <a href="<%= themeConfig.domain %>/bangumis" class="capsule-tab" data-page="bangumis">追番</a>
+          <% } %>
+          <!-- 搜索按钮 -->
+          <a href="#search-lightbox" class="capsule-search-btn" onclick="document.getElementById('search-lightbox').classList.add('search-open'); document.getElementById('s').focus(); return false;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- 移动端下拉菜单导航栏 -->
+      <nav class="mobile-bottom-nav">
+        <div class="mobile-nav-trigger" id="mobileNavTrigger" onclick="toggleMobileMenu()">
+          <span>前往</span>
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 10l5 5 5-5z"/>
+          </svg>
+        </div>
+        <div class="mobile-dropdown-menu" id="mobileDropdownMenu">
+          <button class="mobile-dropdown-close" onclick="toggleMobileMenu()">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+          </button>
+          <div class="mobile-dropdown-title">站内导航</div>
+          <% if (site.menus && site.menus.length > 0) { %>
+            <% site.menus.forEach(function(menu, index) { %>
+              <% if (index > 0) { %><div class="mobile-dropdown-divider"></div><% } %>
+              <a href="<%= menu.link %>" class="mobile-dropdown-item" onclick="toggleMobileMenu()">
+                <%= menu.name %>
+              </a>
+            <% }); %>
+          <% } else { %>
+            <a href="<%= themeConfig.domain %>" class="mobile-dropdown-item" onclick="toggleMobileMenu()">首页</a>
+            <div class="mobile-dropdown-divider"></div>
+            <a href="<%= themeConfig.domain %>/archives" class="mobile-dropdown-item" onclick="toggleMobileMenu()">博客</a>
+            <div class="mobile-dropdown-divider"></div>
+            <a href="<%= themeConfig.domain %>/tags" class="mobile-dropdown-item" onclick="toggleMobileMenu()">花园</a>
+            <div class="mobile-dropdown-divider"></div>
+            <a href="<%= themeConfig.domain %>/friends" class="mobile-dropdown-item" onclick="toggleMobileMenu()">友链</a>
+            <div class="mobile-dropdown-divider"></div>
+            <a href="<%= themeConfig.domain %>/essay" class="mobile-dropdown-item" onclick="toggleMobileMenu()">留言</a>
+          <% } %>
+        </div>
+      </nav>
+
+      <script>
+      // 胶囊滑块 Tabbar 交互逻辑
+      function initCapsuleSliders() {
+        // 桌面端胶囊滑块
+        const capsuleTabs = document.querySelectorAll('.capsule-tab');
+        const capsulePill = document.getElementById('capsulePill');
+        
+        // 移动端胶囊滑块
+        const mobileCapsuleTabs = document.querySelectorAll('.mobile-capsule-tab');
+        const mobileCapsulePill = document.getElementById('mobileCapsulePill');
+        
+        // 初始化桌面端滑块
+        if (capsulePill && capsuleTabs.length > 0) {
+          initCapsuleSlider(capsuleTabs, capsulePill);
+        }
+        
+        // 初始化移动端滑块
+        if (mobileCapsulePill && mobileCapsuleTabs.length > 0) {
+          initCapsuleSlider(mobileCapsuleTabs, mobileCapsulePill);
+        }
+      }
+      
+      function initCapsuleSlider(tabs, pill) {
+        // 不需要活跃页面逻辑，默认选择第一个标签页用于滑块定位
+        let currentTab = tabs[0];
+        
+        function movePill(tab, animate = true) {
+          if (!animate) {
+            pill.style.transition = 'none';
+          }
+          pill.style.left = tab.offsetLeft + 'px';
+          pill.style.width = tab.offsetWidth + 'px';
+          if (!animate) {
+            pill.offsetWidth;
+            pill.style.transition = '';
+          }
+        }
+        
+        function switchTo(tab) {
+          // 不需要切换活跃状态，只移动滑块位置
+          movePill(tab);
+        }
+        
+        tabs.forEach(tab => {
+          // 移除之前的事件监听器，避免重复绑定
+          tab.removeEventListener('click', handleTabClick);
+          tab.removeEventListener('mouseenter', handleMouseEnter);
+          tab.removeEventListener('mouseleave', handleMouseLeave);
+          
+          // 添加新的点击事件
+          tab.addEventListener('click', handleTabClick);
+          
+          // 添加鼠标悬停事件 - 滑块跟随
+          tab.addEventListener('mouseenter', handleMouseEnter);
+          tab.addEventListener('mouseleave', handleMouseLeave);
+          
+          function handleTabClick(e) {
+            // 添加点击动画效果
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+            
+            // 允许链接正常跳转，不阻止默认行为
+          }
+          
+          function handleMouseEnter() {
+            // 鼠标悬停时，先显示滑块，然后移动到当前按钮
+            pill.style.opacity = '1';
+            movePill(this, true);
+          }
+          
+          function handleMouseLeave() {
+            // 鼠标离开时，滑块直接消失（不回到页面位置）
+            pill.style.opacity = '0';
+          }
+        });
+        
+        // 监听窗口大小变化
+        const tabbarContainer = tabs[0].closest('.capsule-tabbar, .mobile-capsule-tabbar');
+        if (tabbarContainer) {
+          new ResizeObserver(() => movePill(currentTab, false)).observe(tabbarContainer);
+        }
+        
+        // 为搜索按钮添加滑块跟随效果
+        const searchBtn = tabbarContainer ? tabbarContainer.querySelector('.capsule-search-btn') : null;
+        if (searchBtn) {
+          searchBtn.addEventListener('mouseenter', function() {
+            pill.style.opacity = '1';
+            movePill(this, true);
+          });
+          searchBtn.addEventListener('mouseleave', function() {
+            pill.style.opacity = '0';
+          });
+        }
+        
+        // 初始化滑块位置
+        movePill(currentTab);
+      }
+      
+      // 页面加载完成后立即初始化滑块
+      document.addEventListener('DOMContentLoaded', function() {
+        initCapsuleSliders();
+      });
+      
+      // 页面切换后重新初始化滑块（适用于单页应用或部分页面刷新）
+      window.addEventListener('load', function() {
+        setTimeout(initCapsuleSliders, 100); // 延迟确保DOM完全加载
+      });
+      
+      // 监听URL变化（适用于单页应用）
+      window.addEventListener('popstate', function() {
+        setTimeout(initCapsuleSliders, 50);
+      });
+      
+      // 监听页面可见性变化（适用于标签页切换）
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          setTimeout(initCapsuleSliders, 100);
+        }
+      });
+      
+      // 移动端菜单切换函数
+      function toggleMobileMenu() {
+        const trigger = document.getElementById('mobileNavTrigger');
+        const dropdown = document.getElementById('mobileDropdownMenu');
+        
+        if (!trigger || !dropdown) return;
+        
+        const isOpen = dropdown.classList.contains('open');
+        
+        if (isOpen) {
+          dropdown.classList.remove('open');
+          trigger.classList.remove('active');
+        } else {
+          dropdown.classList.add('open');
+          trigger.classList.add('active');
+        }
+      }
+      
+      // 点击页面其他地方关闭菜单
+      document.addEventListener('click', function(e) {
+        const nav = document.querySelector('.mobile-bottom-nav');
+        const dropdown = document.getElementById('mobileDropdownMenu');
+        const trigger = document.getElementById('mobileNavTrigger');
+        
+        if (nav && dropdown && trigger && !nav.contains(e.target)) {
+          dropdown.classList.remove('open');
+          trigger.classList.remove('active');
+        }
+      });
+      </script>
